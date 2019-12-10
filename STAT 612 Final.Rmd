@@ -154,6 +154,9 @@ table(tips$day)
 
 
 #13 Using stringr::words, produce r code that will show all words that end with tion or ing
+```{r}
+str_subset(stringr::words, "tion|ing")
+```
 
 
 
