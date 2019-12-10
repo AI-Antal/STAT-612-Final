@@ -1,0 +1,165 @@
+---
+₹title: "STAT 612 Final"
+author: "Aneeshinder Antal"
+date: "09/12/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(scipen = 999)
+```
+
+```{r}
+library(tidyverse)		
+library(stringr)           
+library(dplyr)
+library(ggplot2)		
+library(tidyr)              
+library(reshape2)
+library(readr)			
+library(forcats)
+library(ggthemes)
+```
+
+
+#1 Using appropriate r code,  read in the emailed excel spread sheet
+<!--The data in "college_score.csv" contains a subset of the variables found in the
+2016 to 2017 [College Scorecard](https://collegescorecard.ed.gov/data/)
+database. These data contain information on colleges in the United States. 
+The variables included are:
+- `UNITID` and `OPEID`: Identifiers for the colleges.
+- `INSTNM`: Institution name
+- `ADM_RATE`: The Admission Rate.
+- `SAT_AVE`: Average SAT equivalent score of students admitted.
+- `UGDS`: Enrollment of undergraduate certificate/degree-seeking students
+- `COSTT4_A`: Average cost of attendance (academic year institutions)
+- `AVGFACSAL`: Average faculty salary
+- `GRAD_DEBT_MDN`: The median debt for students who have completed
+- `AGE_ENTRY`: Average age of entry
+- `ICLEVEL`: Level of institution (1 = 4-year, 2 = 2-year, 3 = less than 2-year).
+- `MN_EARN_WNE_P6`: Mean earnings of students working and not enrolled 6 years 
+  after entry (so students who graduated in the 2009 to 2010 academic year).-->
+  
+
+```{r}
+college <- read_csv("college_score.csv")
+str(college)
+```
+```{r}
+college$MN_EARN_WNE_P6<- as.numeric(as.character(college$MN_EARN_WNE_P6))
+college$GRAD_DEBT_MDN<- as.numeric(as.character(college$GRAD_DEBT_MDN))
+college$AGE_ENTRY<- as.numeric(as.character(college$AGE_ENTRY))
+
+```
+
+#2 Given the level of the institution, does there appear to be an association between the average cost of attendance and the mean earnings of students six years after graduation? Make an appropriate plot to justify your response. You will be evaluated on the appropriateness of the plot and the aesthetics of the plot. (Hint: Generate two plots to make your decision, first a standard scatter plot involving the two continuous variables mentioned and then a facet plot over the appropriate categorical variable)
+
+```{r}
+college %>% 
+  ggplot(aes(COSTT4_A, MN_EARN_WNE_P6)) +
+  geom_point() +
+  labs(x = "Average Cost of Attendance", y = "Mean Earnings", main = "Relation between Attendance cost and Average Earnings")
+
+college %>% 
+  ggplot(aes(COSTT4_A, MN_EARN_WNE_P6)) +
+  geom_point() +
+  labs(x = "Average Cost of Attendance", y = "Mean Earnings", main = "Relation between Attendance cost and Average Earnings") +
+  facet_wrap(~ICLEVEL)
+
+```
+
+#3 Use r code to produce a histogram of the average age of entry.  Comment on the distribution of this variable.
+```{r}
+hist(college$AGE_ENTRY, xlab = "Average age of Entry", ylab = "Count", main = "Histogram of Average Age of Entry")
+```
+The distribution of Age of Entry is right skewed.
+
+#4 Use r code that will produce output that shows the 10 institutions that have the highest average age of entry?
+```{r}
+college %>% 
+  select(INSTNM, AGE_ENTRY) %>% 
+  arrange(desc(AGE_ENTRY)) %>% 
+  head(n = 10)
+```
+
+
+#5 There are many universities with "American University" in the name. E.g. "American University of Puerto Rico" and "National American University-Ellsworth AFB Extension".  Use r code to create a data frame, called  `americandf`, that contains just the data from universities with "American University" in the name.
+```{r}
+americandf <- college %>% 
+  filter(str_detect(INSTNM, "American University"))
+americandf
+```
+
+
+#6 Provide r code that will produce the number of colleges from the College Score data frame that have average SAT scores that are above 1000.  ( Do not produce the data frame.  Your code should only yield the number)
+```{r}
+college %>%
+  filter(SAT_AVG > 1000) %>% 
+  count()
+```
+
+#7 Provide r code that will show a data frame that lists the 10 highest Average SAT scores in decreasing order.  A partial data frame is given below.
+```{r}
+college %>% 
+  arrange(desc(SAT_AVG)) %>% 
+  head(n = 10)
+```
+
+
+#8 Using the gss_cat data frame, write r code that will produce the bar graph below. And explain in one or two sentences why the bar graph is difficult to interpret.
+```{r}
+class(gss_cat$rincome)
+ggplot(gss_cat, aes(rincome)) +
+  geom_bar()
+```
+The difficulty in interpretting the bar graph is due to the overlap of value of the x axis which makes it unreadable.
+
+#9 Now write r code from the same data set that produce the transformed bar graph and comment on why it is an improvement
+```{r}
+ggplot(gss_cat, aes(rincome)) +
+  geom_bar() +
+  coord_flip()
+```
+
+
+#Use r code to produce the tips data frame from the reshape2 package.  Name three categorical variables in the data frame.
+```{r}
+str(tips)
+```
+Sex, Smoker, Day and Time are the 4 categorial variables in the data frame.
+
+#10 Use r code to indicate how many levels exist for the factor day in the tips data frame  and determine the frequency of each level.
+```{r}
+levels(tips$day)
+```
+
+
+```{r}
+table(tips$day)
+```
+
+
+#11 Produce r code that will produce the following histogram from the tips data frame
+```{r}
+
+
+```
+
+
+#12 Write r code that will produce the following histograms from the tips data frame
+```{r}
+
+```
+
+
+#13 Using stringr::words, produce r code that will show all words that end with tion or ing
+
+
+
+
+
+
+
+
+
