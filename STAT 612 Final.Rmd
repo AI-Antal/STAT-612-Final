@@ -50,7 +50,6 @@ str(college)
 college$MN_EARN_WNE_P6<- as.numeric(as.character(college$MN_EARN_WNE_P6))
 college$GRAD_DEBT_MDN<- as.numeric(as.character(college$GRAD_DEBT_MDN))
 college$AGE_ENTRY<- as.numeric(as.character(college$AGE_ENTRY))
-
 ```
 
 #2 Given the level of the institution, does there appear to be an association between the average cost of attendance and the mean earnings of students six years after graduation? Make an appropriate plot to justify your response. You will be evaluated on the appropriateness of the plot and the aesthetics of the plot. (Hint: Generate two plots to make your decision, first a standard scatter plot involving the two continuous variables mentioned and then a facet plot over the appropriate categorical variable)
@@ -68,6 +67,9 @@ college %>%
   facet_wrap(~ICLEVEL)
 
 ```
+
+Looking at the 1st plot we can see that there is a slight positive association between mean earning and average cost of attendance. In the 2nd plot, the level 1 and 2 institutes have a positive association, whereas level 3 institutes have nearly 0 association between the two variables.
+
 
 #3 Use r code to produce a histogram of the average age of entry.  Comment on the distribution of this variable.
 ```{r}
@@ -96,7 +98,7 @@ americandf
 ```{r}
 college %>%
   filter(SAT_AVG > 1000) %>% 
-  count()
+  nrow()
 ```
 
 #7 Provide r code that will show a data frame that lists the 10 highest Average SAT scores in decreasing order.  A partial data frame is given below.
@@ -127,7 +129,7 @@ ggplot(gss_cat, aes(rincome)) +
 ```{r}
 str(tips)
 ```
-Sex, Smoker, Day and Time are the 4 categorial variables in the data frame.
+Sex, Smoker, Day and Time are the categorial variables in the data frame.
 
 #10 Use r code to indicate how many levels exist for the factor day in the tips data frame  and determine the frequency of each level.
 ```{r}
@@ -142,20 +144,25 @@ table(tips$day)
 
 #11 Produce r code that will produce the following histogram from the tips data frame
 ```{r}
-
+tips %>% 
+  ggplot() +
+  geom_histogram(aes(total_bill), color = "white", bins = 30, binwidth = 2)
 
 ```
 
 
 #12 Write r code that will produce the following histograms from the tips data frame
 ```{r}
-
+tips %>% 
+  ggplot() +
+  geom_histogram(aes(total_bill), color = "white", bins = 30, binwidth = 2) +
+  facet_grid(sex ~ smoker)
 ```
 
 
 #13 Using stringr::words, produce r code that will show all words that end with tion or ing
 ```{r}
-str_subset(stringr::words, "tion|ing")
+str_subset(stringr::words, "tion|ing$")
 ```
 
 
